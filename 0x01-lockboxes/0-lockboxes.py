@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """ This module defines a function that solves the lockboxes problem
 in which we have a collection of boxes,
 and each box has zero or more keys to other boxes (or itself)
