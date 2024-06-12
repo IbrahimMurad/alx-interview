@@ -20,5 +20,5 @@ def minOperations(n: int, primes: Optional[List[int]] = None) -> int:
         ]
     for prime in primes:
         if n % prime == 0:
-            return prime + minOperations(n // prime)
+            return prime + minOperations(n // prime, primes)
     return 0
