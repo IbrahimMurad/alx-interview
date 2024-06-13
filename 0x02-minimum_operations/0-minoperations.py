@@ -7,18 +7,17 @@ It also defines all the required function to solve the problem.
 from typing import List, Optional
 
 
-def minOperations(n: int, primes: Optional[List[int]] = None) -> int:
+def minOperations(n: int) -> int:
     """ returns the minimum number of operations
     needed to result in exactly n H characters in the file """
 
     if n < 2:
         return 0
-    if not primes:
-        primes = [
-            i for i in range(2, n + 1)
-            if all([i % j != 0 for j in range(2, i)])
-        ]
-    for prime in primes:
-        if n % prime == 0:
-            return prime + minOperations(n // prime, primes)
-    return 0
+    divisor = 2
+    operations = 0
+    while n > 1:
+        while n % divisor == 0:
+            n = n / divisor
+            operations += divisor
+        divisor += 1
+    return operations
