@@ -25,19 +25,12 @@ class LogLine:
         """ extracts the required information from the line """
 
         # splitting the line to get each part separately
-        regex = (
-            r'(\d{1,3}(\.\d{1,3}){3})'                           # IP address
-            r' - '                                               # Separator
-            r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6})\]'  # Timestamp
-            r' "GET /projects/260 HTTP/1.1"'                     # HTTP Method and URL and version
-            r' (\d{3})'                                          # Status code
-            r' (\d+)'                                            # Response size
-        )
-        isMatching = re.match(regex, line)
+        regex = r'^\S+ - \[\S+ \S+\] "GET /projects/260 HTTP/1.1" (\d{3}) (\d+)$'
+        match = re.match(regex, line)
 
-        if isMatching:
-            status_code = int(isMatching.group(4))
-            file_size = int(isMatching.group(5))
+        if match:
+            status_code = int(match.group(1))
+            file_size = int(match.group(2))
             LogLine.total_size += file_size
             if status_code in LogLine.status.keys():
                 LogLine.status[status_code] += 1
