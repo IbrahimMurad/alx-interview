@@ -58,7 +58,7 @@ class LogLine:
 def main() -> None:
     """ Main function """
     def signal_handler(sig, frame):
-        print(LogLine.strRepresentation(), end="")
+        LogLine.strRepresentation()
         sys.exit(0)
 
     signal.signal(signal.SIGINT, signal_handler)
