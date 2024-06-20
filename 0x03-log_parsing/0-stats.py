@@ -9,7 +9,7 @@ import datetime
 class LogLine:
     """ This class holds all the information required per line """
 
-    file_size = 0
+    total_size = 0
     status = {
         "200": 0,
         "301": 0,
@@ -53,13 +53,13 @@ class LogLine:
             raise ValueError
 
         # updating the file size and the number of status codes received
-        LogLine.file_size += int(parts[8])
+        LogLine.total_size += int(parts[8])
         LogLine.status[statusCode] += 1
 
     def strRepresentation() -> str:
         """ returns the string representation of the class
         in the format <status code>: <number> """
-        fileSize = "File size: {}\n".format(LogLine.file_size)
+        fileSize = "File size: {}\n".format(LogLine.total_size)
         status = ""
         for key, value in LogLine.status.items():
             if value != 0:
