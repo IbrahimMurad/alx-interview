@@ -3,7 +3,7 @@
 and parses it to retrieve some data """
 import sys
 import re
-import datetime
+import signal
 
 
 class LogLine:
@@ -56,15 +56,22 @@ class LogLine:
                 status += "{}: {}\n".format(key, value)
         return fileSize + status
 
+def main() -> None:
+    """ Main function """
+    def signal_handler(sig, frame):
+        print(LogLine.strRepresentation(), end="")
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, signal_handler)
+
+    line_number = 0
+    for line in sys.stdin:
+        line_number += 1
+        LogLine(line)
+        if line_number == 10:
+            line_number = 0
+            print(LogLine.strRepresentation(), end="")
+
 
 if __name__ == "__main__":
-    line_number = 0
-    try:
-        for line in sys.stdin:
-            line_number += 1
-            LogLine(line)
-            if line_number == 10:
-                line_number = 0
-                print(LogLine.strRepresentation(), end="")
-    except KeyboardInterrupt:
-        print(LogLine.strRepresentation(), end="")
+    main()
