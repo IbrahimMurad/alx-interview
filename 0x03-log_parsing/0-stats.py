@@ -61,7 +61,8 @@ class LogLine:
         in the format <status code>: <number> """
         fileSize = "File size: {}\n".format(LogLine.file_size)
         status = ""
-        for key, value in LogLine.status.items():
+        sorted_status = sorted(LogLine.status.items(), key=lambda x: x[1], reverse=True)
+        for key, value in sorted_status:
             status += "{}: {}\n".format(key, value)
         return fileSize + status
 
