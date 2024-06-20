@@ -56,6 +56,7 @@ class LogLine:
                 status += "{}: {}\n".format(key, value)
         return fileSize + status
 
+
 def main() -> None:
     """ Main function """
     def signal_handler(sig, frame):
