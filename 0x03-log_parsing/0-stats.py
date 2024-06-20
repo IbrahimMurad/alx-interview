@@ -25,16 +25,25 @@ class LogLine:
         """ extracts the required information from the line """
 
         # splitting the line to get each part separately
-        regex = r'^\S+ - \[\S+ \S+\] "GET /projects/260 HTTP/1.1" (\d{3}) (\d+)$'
+        regex = (
+            r'(?P<ip>\d{1,3}(\.\d{1,3}){3})'  # IP address
+            r' - '                            # Separator
+            r'\[(?P<date>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6})\]'  # Date
+            r' "GET /projects/260 HTTP/1.1"'  # HTTP Request
+            r' (?P<status>\d{3})'             # Status code
+            r' (?P<size>\d+)'                 # File size
+        )
         match = re.match(regex, line)
 
-        if match:
-            status_code = int(match.group(1))
-            file_size = int(match.group(2))
-            LogLine.total_size += file_size
-            if status_code in LogLine.status.keys():
-                LogLine.status[status_code] += 1
-            
+        try:
+            if match:
+                status_code = int(match.group('status'))
+                file_size = int(match.group('size'))
+                LogLine.total_size += file_size
+                if status_code in LogLine.status.keys():
+                    LogLine.status[status_code] += 1
+        except Exception:
+            pass
 
     def strRepresentation() -> str:
         """ returns the string representation of the class
@@ -53,12 +62,9 @@ if __name__ == "__main__":
     try:
         for line in sys.stdin:
             line_number += 1
-            try:
-                LogLine(line)
-                if line_number == 10:
-                    line_number = 0
-                    print(LogLine.strRepresentation(), end="")
-            except (ValueError, SyntaxError):
-                continue
+            LogLine(line)
+            if line_number == 10:
+                line_number = 0
+                print(LogLine.strRepresentation(), end="")
     except KeyboardInterrupt:
         print(LogLine.strRepresentation(), end="")
