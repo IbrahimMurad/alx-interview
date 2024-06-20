@@ -45,16 +45,14 @@ class LogLine:
         except Exception:
             pass
 
-    def strRepresentation() -> str:
-        """ returns the string representation of the class
+    def strRepresentation() -> None:
+        """ prints the required information
         in the format <status code>: <number> """
-        fileSize = "File size: {}\n".format(LogLine.total_size)
-        status = ""
+        print("File size: {}".format(LogLine.total_size))
         for key in sorted(LogLine.status.keys()):
             value = LogLine.status[key]
             if value != 0:
-                status += "{}: {}\n".format(key, value)
-        return fileSize + status
+                print("{}: {}".format(key, value))
 
 
 def main() -> None:
@@ -71,7 +69,7 @@ def main() -> None:
         LogLine(line)
         if line_number == 10:
             line_number = 0
-            print(LogLine.strRepresentation(), end="")
+            LogLine.strRepresentation()
 
 
 if __name__ == "__main__":
