@@ -11,50 +11,37 @@ class LogLine:
 
     total_size = 0
     status = {
-        "200": 0,
-        "301": 0,
-        "400": 0,
-        "401": 0,
-        "403": 0,
-        "404": 0,
-        "405": 0,
-        "500": 0
+        200: 0,
+        301: 0,
+        400: 0,
+        401: 0,
+        403: 0,
+        404: 0,
+        405: 0,
+        500: 0
         }
 
     def __init__(self, line: str) -> None:
         """ extracts the required information from the line """
 
         # splitting the line to get each part separately
-        parts = line.split(" ")
+        regex = (
+            r'(\d{1,3}(\.\d{1,3}){3})'                           # IP address
+            r' - '                                               # Separator
+            r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6})\]'  # Timestamp
+            r' "GET /projects/260 HTTP/1.1"'                     # HTTP Method and URL and version
+            r' (\d{3})'                                          # Status code
+            r' (\d+)'                                            # Response size
+        )
+        isMatching = re.match(regex, line)
 
-        # Building the regex expression for the IP
-        IP_octet_re = "((25[0-5])|(2[0-4][0-9])|(1[0-9]{2})|([1-9]?[0-9]))"
-        IP_re = re.compile("^(" + IP_octet_re + "\\.){3}" + IP_octet_re)
-        IP_Address = parts[0]
-
-        # skip the line if the IP part is not a valid IP
-        if not IP_re.match(IP_Address):
-            raise SyntaxError
-
-        # if the date is not a valid datetime, an exception is raised
-        date = datetime.datetime.fromisoformat(
-            parts[2][1:] + " " + parts[3][:-2] + "0"
-            )
-
-        # checking the request part and raise an exception
-        # if not in the provided syntax
-        request = parts[4] + " " + parts[5] + " " + parts[6]
-        if request != "\"GET /projects/260 HTTP/1.1\"":
-            raise ValueError
-
-        # check the status code and raise exception if not in the list provided
-        statusCode = parts[7]
-        if statusCode not in LogLine.status.keys():
-            raise ValueError
-
-        # updating the file size and the number of status codes received
-        LogLine.total_size += int(parts[8])
-        LogLine.status[statusCode] += 1
+        if isMatching:
+            status_code = int(isMatching.group(4))
+            file_size = int(isMatching.group(5))
+            LogLine.total_size += file_size
+            if status_code in LogLine.status.keys():
+                LogLine.status[status_code] += 1
+            
 
     def strRepresentation() -> str:
         """ returns the string representation of the class
