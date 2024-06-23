@@ -26,12 +26,8 @@ class LogLine:
 
         # splitting the line to get each part separately
         regex = (
-            r'(?P<ip>\d{1,3}(\.\d{1,3}){3})'  # IP address
-            r' - '                            # Separator
-            r'\[(?P<date>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6})\]'  # Date
-            r' "GET /projects/260 HTTP/1.1"'  # HTTP Request
-            r' (?P<status>\d{3})'             # Status code
-            r' (?P<size>\d+)'                 # File size
+            r'^\S+ ?- ?\[\S+ \S+\] "GET /projects/260 HTTP/1.1"'
+            r' (?P<status>\d{3}) (?P<size>\d+)$'
         )
         match = re.match(regex, line)
 
