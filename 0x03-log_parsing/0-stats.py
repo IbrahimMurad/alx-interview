@@ -26,20 +26,28 @@ class LogLine:
 
         # splitting the line to get each part separately
         regex = (
-            r'^\S+ ?- ?\[\S+ \S+\] "GET /projects/260 HTTP/1.1"'
-            r' (?P<status>\d{3}) (?P<size>\d+)$'
+            r'(?P<ip>.+)'  # IP address
+            r' ?- ?'                            # Separator
+            r'\[(?P<date>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{6})\]'  # Date
+            r' "GET /projects/260 HTTP/1.1"'  # HTTP Request
+            r' (?P<status>.+)'             # Status code
+            r' (?P<size>.+)'                 # File size
         )
         match = re.match(regex, line)
 
-        try:
-            if match:
+        if match:
+            try:
                 status_code = int(match.group('status'))
-                file_size = int(match.group('size'))
-                LogLine.total_size += file_size
                 if status_code in LogLine.status.keys():
                     LogLine.status[status_code] += 1
-        except Exception:
-            pass
+            except:
+                pass
+
+            try:
+                file_size = int(match.group('size'))
+                LogLine.total_size += file_size
+            except:
+                pass
 
     def strRepresentation() -> None:
         """ prints the required information
