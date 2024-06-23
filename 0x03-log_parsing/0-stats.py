@@ -40,13 +40,13 @@ class LogLine:
                 status_code = int(match.group('status'))
                 if status_code in LogLine.status.keys():
                     LogLine.status[status_code] += 1
-            except:
+            except Exception:
                 pass
 
             try:
                 file_size = int(match.group('size'))
                 LogLine.total_size += file_size
-            except:
+            except Exception:
                 pass
 
     def strRepresentation() -> None:
