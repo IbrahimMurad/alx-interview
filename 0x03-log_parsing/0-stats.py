@@ -58,18 +58,23 @@ class LogLine:
 def main() -> None:
     """ Main function """
     def signal_handler(sig, frame):
-        LogLine.strRepresentation()
-        sys.exit(0)
+        pass
 
     signal.signal(signal.SIGINT, signal_handler)
 
-    line_number = 0
-    for line in sys.stdin:
-        line_number += 1
-        LogLine(line)
-        if line_number == 10:
-            line_number = 0
-            LogLine.strRepresentation()
+    try:
+        line_number = 0
+        for line in sys.stdin:
+            line_number += 1
+            LogLine(line)
+            if line_number == 10:
+                line_number = 0
+                LogLine.strRepresentation()
+    except Exception:
+        pass
+    finally:
+        LogLine.strRepresentation()
+        sys.exit(0)
 
 
 if __name__ == "__main__":
