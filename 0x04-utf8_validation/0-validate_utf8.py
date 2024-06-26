@@ -19,6 +19,27 @@ def num_of_bytes(n: int) -> int:
     return 1
 
 
+def check_seq_bytes(continuation_bytes: List[int]) -> bool:
+    """ Checks the continuation_bytes """
+    for i in continuation_bytes:
+        if i >> 6 != 0b10:
+            return False
+    return True
+
+
+def overlong(sequence: List[int]) -> bool:
+    """ checks if the sequence is overlong """
+    bytes_num = len(sequence)
+    encoded_value = sequence[0] & (0xFF >> (bytes_num + 1))
+    min_value = [0, 0x7f, 0x7ff, 0xffff]
+    for i in range(1, bytes_num):
+        encoded_value <<= 6
+        encoded_value |= (sequence[i] & 0b00111111)
+    if encoded_value <= min_value[bytes_num - 1]:
+        return True
+    return False
+
+
 def validUTF8(data: List[int]) -> bool:
     """ return true if data represents a valid UTF-8 encoding """
     i = 0
@@ -27,8 +48,11 @@ def validUTF8(data: List[int]) -> bool:
         points = num_of_bytes(data[i])
         if points == 0 or (i + points) > data_length:
             return False
-        for j in range(points - 1):
-            if data[i + j + 1] >> 6 != 0b10:
+        if points > 1:
+            continuation_bytes = data[i + 1:i + points]
+            if not check_seq_bytes(continuation_bytes):
+                return False
+            if overlong([data[i], *continuation_bytes]):
                 return False
         i += points
     return True
