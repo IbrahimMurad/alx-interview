@@ -49,10 +49,9 @@ def validUTF8(data: List[int]) -> bool:
         if points == 0 or (i + points) > data_length:
             return False
         if points > 1:
-            continuation_bytes = data[i + 1:i + points]
-            if not check_seq_bytes(continuation_bytes):
+            if not check_seq_bytes(data[i + 1:i + points]):
                 return False
-            if overlong([data[i], *continuation_bytes]):
+            if overlong(data[i:i + points]):
                 return False
         i += points
     return True
