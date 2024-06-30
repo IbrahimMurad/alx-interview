@@ -9,6 +9,7 @@ def significant_8(sequence: List[int]) -> List[int]:
     """ returns the same list but with only the first 8 significant digits """
     return [n & 0b11111111 for n in sequence]
 
+
 def num_of_bytes(n: int) -> int:
     """ returns true if n is a valid byte """
     if n >> 7:
