@@ -5,6 +5,10 @@ determines if a given data set represents a valid UTF-8 encoding.
 from typing import List
 
 
+def significant_8(sequence: List[int]) -> List[int]:
+    """ returns the same list but with only the first 8 significant digits """
+    return [n & 0b11111111 for n in sequence]
+
 def num_of_bytes(n: int) -> int:
     """ returns true if n is a valid byte """
     if n >> 7:
@@ -42,6 +46,7 @@ def overlong(sequence: List[int]) -> bool:
 
 def validUTF8(data: List[int]) -> bool:
     """ return true if data represents a valid UTF-8 encoding """
+    data = significant_8(data)
     i = 0
     data_length = len(data)
     while i < data_length:
