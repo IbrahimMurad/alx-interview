@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ This module defines a function that rotates a 2D-Matrix 90 degree clockwise
 """
-from typing import List, Any
 
-def rotate_2d_matrix(matrix: List[List[Any]]) -> None:
+
+def rotate_2d_matrix(matrix):
     """ rotates matrix 90 degree clockwise in place
     matrix is a list of lists """
     matrix.reverse()
