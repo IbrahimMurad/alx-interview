@@ -3,7 +3,7 @@
 """
 
 
-def makeChange(coins: list[int], total: int) -> int:
+def makeChange(coins, total):
     """ calculates the fewest number of coins needed
     to meet a given amount total using the coins provided in coins list
 
