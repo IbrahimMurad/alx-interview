@@ -37,17 +37,6 @@ def island_perimeter(grid):
     """
     if not is_valid_grid(grid):
         return None
-    grid = [row for row in grid if any(row)]
-    grid = [[row[i] for row in grid] for i in range(len(grid[0]))]
-    grid = [row for row in grid if any(row)]
-    for i in range(len(grid)):
-        grid[i] = [0, *grid[i]]
-        grid[i].append(0)
-    grid = [
-        [0]*len(grid[0]),
-        *grid,
-        [0]*len(grid[0])
-    ]
     perimeter = 0
     for i in range(len(grid)):
         for j in range(len(grid[0])):
