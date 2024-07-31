@@ -2,6 +2,7 @@
 """ Island Perimeter problem solving script
 """
 
+
 def is_valid_grid(grid):
     """ chaecks if the passed 2D matrix is a valid grid """
     if type(grid) is not list:
@@ -39,4 +40,27 @@ def island_perimeter(grid):
     grid = [row for row in grid if any(row)]
     grid = [[row[i] for row in grid] for i in range(len(grid[0]))]
     grid = [row for row in grid if any(row)]
-    return 2 * (len(grid) + len(grid[0]))
+    for i in range(len(grid)):
+        if grid[i][0]:
+            grid[i] = [0, *grid[i]]
+        if grid[i][-1]:
+            grid[i].append(0)
+    grid = [
+        [0]*len(grid[0]),
+        *grid,
+        [0]*len(grid[0])
+    ]
+    perimeter = 0
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j]:
+                perimeter = 4
+                if grid[i-1][j]:
+                    perimeter -= 1
+                if grid[i+1][j]:
+                    perimeter -= 1
+                if grid[i][j-1]:
+                    perimeter -= 1
+                if grid[i][j+1]:
+                    perimeter -= 1
+    return perimeter
