@@ -36,7 +36,7 @@ def island_perimeter(grid):
         0 represents water and 1 represents land
     """
     if not is_valid_grid(grid):
-        return 0
+        raise ValueError("Invalid grid")
     perimeter = 0
     for i in range(len(grid)):
         for j in range(len(grid[0])):
