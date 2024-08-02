@@ -20,11 +20,6 @@ def is_valid_grid(grid):
         for element in row:
             if element not in [0, 1]:
                 return False
-    if any(grid[0]) or any(grid[-1]):
-        return False
-    for row in grid:
-        if row[0] or row[-1]:
-            return False
     return True
 
 
