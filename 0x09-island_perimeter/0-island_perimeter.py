@@ -33,16 +33,18 @@ def island_perimeter(grid):
     if not is_valid_grid(grid):
         raise ValueError("Invalid grid")
     perimeter = 0
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
+    grid_height = len(grid)
+    grid_width = len(grid[0])
+    for i in range(grid_height):
+        for j in range(grid_width):
             if grid[i][j]:
                 perimeter += 4
-                if grid[i-1][j]:
+                if i - 1 >= 0 and grid[i - 1][j]:
                     perimeter -= 1
-                if grid[i+1][j]:
+                if i + 1 < grid_height and grid[i + 1][j]:
                     perimeter -= 1
-                if grid[i][j-1]:
+                if j - 1 >= 0 and grid[i][j - 1]:
                     perimeter -= 1
-                if grid[i][j+1]:
+                if j + 1 < grid_width and grid[i][j + 1]:
                     perimeter -= 1
     return perimeter
