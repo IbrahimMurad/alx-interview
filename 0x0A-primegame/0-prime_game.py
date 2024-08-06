@@ -41,7 +41,7 @@ def isWinner(x, nums):
         if turnWinner(nums[i]):
             MaraiWins += 1
         else:
-            BenWins +=1
+            BenWins += 1
     if MaraiWins > BenWins:
         return 'Maria'
     elif BenWins > MaraiWins:
